@@ -9,7 +9,7 @@ class StockIndex:
     @staticmethod
     def rsi(date, days=14):
         start_date = DateUtil.rough_datetime(date, months=-1)
-        trend_list = list(StockTrend.stock_trend_info(Stock.CODE, start_date, date).items())[:days]
+        trend_list = list(StockTrend.stock_trend_info(Stock.CODE, start_date, date).items())[1:days+1]
         price_list = [float(x[1]['close']) for x in trend_list]
 
         rise_sum, down_sum = 0, 0
