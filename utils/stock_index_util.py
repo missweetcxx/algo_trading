@@ -19,14 +19,12 @@ class StockIndex:
                 rise_sum += balance
             else:
                 down_sum -= balance
-
         if (rise_sum + down_sum) != 0:
             rsi = 100 * rise_sum / (rise_sum + down_sum)
         else:
             rsi = 50
-
         return rsi
 
     @staticmethod
     def rsi_2(date):
-        return StockIndex.rsi(date, days=2)
+        return StockIndex.rsi(date, days=12)
