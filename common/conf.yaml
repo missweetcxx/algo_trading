@@ -1,0 +1,15 @@
+---
+HTTP:
+  SOHU_STOCK_URL: 'http://q.stock.sohu.com/hisHq?code=cn_{}&start={}&end={}&stat=1&order=D&period=d&callback=historySearchHandler&rt=jsonp'
+  USER_AGENT : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
+
+
+TREND_FORMAT:
+  LABEL_NAME : 'price'
+  LINE_WIDTH : 3
+  LINE_COLOR : '#87CEFA'
+  MARKER : 'o'
+  MARKER_COLOR: '#87CEFA'
+  MARKER_SIZE: 5
+  X_LABEL: 'Date'
+  Y_LABEL: 'Price'
