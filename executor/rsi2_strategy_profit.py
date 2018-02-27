@@ -15,13 +15,13 @@ def rsi2_strategy_executor(date, volume):
     exit_point = StockMarket.connors_exit_condition(date)
     rsi_2 = StockIndex.rsi_2(date)
 
-    if rsi_2 > 90 and exit_point != MarketCondition.LONG:
+    if rsi_2 > 80 and exit_point != MarketCondition.LONG:
         alpha = 1 if market_status == MarketStatus.BULL else 0.9
-        grade = (rsi_2 - 90) / 10 + 1
+        grade = (rsi_2 - 80) / 10 if rsi_2 < 90 else pow((rsi_2 - 80) / 10, 2)
         TradeUtil.sell(volume * grade * alpha, date)
-    elif rsi_2 < 10 and exit_point != MarketCondition.SHORT:
+    elif rsi_2 < 20 and exit_point != MarketCondition.SHORT:
         alpha = 1 if market_status == MarketStatus.BEAR else 0.9
-        grade = (10 - rsi_2) / 10 + 1
+        grade = (20 - rsi_2) / 10 if rsi_2 > 10 else pow((20 - rsi_2) / 10, 2)
         TradeUtil.buy(volume * grade * alpha, date)
 
 
