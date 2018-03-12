@@ -36,7 +36,10 @@ class StockTrend:
         price_type = 'close' if close_price else 'open'
 
         for key, value in stock_list.items():
-            price_list.append(float(value[price_type]))
+            if type(value) is float:
+                price_list.append(value)
+            else:
+                price_list.append(float(value[price_type]))
 
         x = stock_list.keys()
         y = price_list
