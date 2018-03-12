@@ -10,7 +10,6 @@ class Stock:
     START_DATE = ''
     END_DATE = ''
     SH_INDEX = '000001'
-    VOLUME = 100
 
 
 class MarketStatus:
@@ -23,6 +22,7 @@ class Capital:
     STOCK = 0
     STOCK_VOLUME = 0
     CAPITAL_TREND = {}
+    INITIAL = 0
 
 
 class MarketCondition:
@@ -31,5 +31,5 @@ class MarketCondition:
 
 
 class StrategyType:
-    RSI = 'rsi'
-    RSI_2 = 'rsi_2'
+    RSI_HF = 'rsi_hf'
+    RSI_LF = 'rsi_lf'

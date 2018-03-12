@@ -11,7 +11,8 @@ from utils.trade_date_util import TradeDate
 
 
 class Executor:
-    def __init__(self, stock_code, volume, time_span, end_index, strategy):
+    def __init__(self, cash, stock_code, volume, time_span, end_index, strategy):
+        self._cash = cash
         self._stock_code = stock_code
         self._volume = volume
         self._time_span = time_span
@@ -22,13 +23,20 @@ class Executor:
 
     def _setter(self):
         Stock.CODE = self._stock_code
-        Stock.VOLUME = self._volume
         Stock.START_DATE = self._cal_date_list[0]
         Stock.END_DATE = self._cal_date_list[-1]
+        Capital.CASH = self._cash
+        Capital.STOCK_VOLUME = self._volume
+        Capital.STOCK = Capital.STOCK_VOLUME * StockTrend.get_price_by_date(Stock.START_DATE)
+        Capital.INITIAL = Capital.STOCK + Capital.CASH
+
+        logging.info('[Capital] Initial capital in cash is {}'.format(Capital.CASH))
+        logging.info('[Capital] Initial capital in stock is {}'.format(Capital.STOCK))
+        logging.info('[Capital] Total initial capital is {}'.format(Capital.CASH + Capital.STOCK))
 
     def _validator(self):
         if self._volume < 1:
-            logging.error('[Error] Invalid volume : {}'.format(Stock.VOLUME))
+            logging.error('[Error] Invalid volume : {}'.format(Capital.STOCK_VOLUME))
             return False
         if self._time_span < 1 or self._time_span != int(self._time_span):
             logging.error('[Error] Invalid time_span : {}'.format(self._time_span))
@@ -43,12 +51,12 @@ class Executor:
 
         if self._validator():
             for date in self._cal_date_list:
-                if self._strategy_type == StrategyType.RSI_2:
-                    trader = threading.Thread(target=Strategy.trade_rsi_2, args=(date, Stock.VOLUME))
+                if self._strategy_type == StrategyType.RSI_HF:
+                    trader = threading.Thread(target=Strategy.rsi_high_freq, args=(date,))
                     trader.start()
                     trader.join()
-                elif self._strategy_type == StrategyType.RSI:
-                    trader = threading.Thread(target=Strategy.trade_rsi, args=(date, Stock.VOLUME))
+                elif self._strategy_type == StrategyType.RSI_LF:
+                    trader = threading.Thread(target=Strategy.rsi_low_freq, args=(date,))
                     trader.start()
                     trader.join()
 
@@ -57,8 +65,13 @@ class Executor:
                 Capital.CAPITAL_TREND[date] = current_capital
                 logging.info('[{}] current capital is {}'.format(date, current_capital))
 
+            profit = Capital.CASH + Capital.STOCK_VOLUME * StockTrend.get_price_by_date(
+                Stock.END_DATE) - Capital.INITIAL
+            logging.info('[Profit] total profit is {}'.format(profit))
+
         else:
             logging.error("[Exit] Thread would be exited!")
 
-    def show(self):
+    @staticmethod
+    def show():
         StockTrend.stock_trend_chart(Capital.CAPITAL_TREND)
