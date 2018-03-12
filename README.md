@@ -21,21 +21,24 @@ The instruction of this simulative trading system is as below:
   
   ```bash
   python trader.py -- help
-  usage: trader.py [-h] [-sc STOCK_CODE] [-s STRATEGY] [-v VOLUME]
-                   [-ts TIME_SPAN] [-ei END_INDEX]
+  usage: trader.py [-h] [-c CASH] [-v VOLUME] [-sc STOCK_CODE] [-s STRATEGY]
+                 [-ts TIME_SPAN] [-ei END_INDEX]
+
                  
   optional arguments:
   -h, --help            show this help message and exit
+  -c CASH, --cash CASH  initial capital of cash
+  -v VOLUME, --volume VOLUME
+                        initial stock volume
   -sc STOCK_CODE, --stock_code STOCK_CODE
                         stock code
   -s STRATEGY, --strategy STRATEGY
-                        strategy type - 'rsi' and 'rsi_2' are supported
-  -v VOLUME, --volume VOLUME
-                        basic trading volume
+                        strategy type -"rsi_hf" and "rsi_lf" are supported
   -ts TIME_SPAN, --time_span TIME_SPAN
                         time_span
   -ei END_INDEX, --end_index END_INDEX
                         days before last trade day
+
 
   ```
   
