@@ -18,13 +18,16 @@ class Strategy:
         if grades >= 0:
             alpla = 1 if market_status == MarketStatus.BEAR else 0.8
             volume = Capital.STOCK_VOLUME
-            TradeUtil.sell(abs(int(volume * grades * alpla)), date)
-            logging.info('[{}] sell {}'.format(date, int(volume * grades * alpla)))
+            selling_volume = abs(int(volume * grades * alpla))
+            TradeUtil.sell(selling_volume, date)
+            logging.info('[{}] sell {}'.format(date, selling_volume))
+
         else:
             alpla = 1 if market_status == MarketStatus.BULL else 0.8
             volume = Capital.CASH // StockTrend.get_price_by_date(date)
-            TradeUtil.buy(abs(int(volume * grades * alpla)), date)
-            logging.info('[{}] buy {}'.format(date, int(volume * grades * alpla)))
+            buying_volume = abs(int(volume * grades * alpla))
+            TradeUtil.buy(buying_volume, date)
+            logging.info('[{}] buy {}'.format(date, buying_volume))
 
     @staticmethod
     def rsi_low_freq(date):
@@ -36,12 +39,14 @@ class Strategy:
             alpha = 0.8 if market_status == MarketStatus.BULL else 1
             grade = (rsi_2 - 80) / 10 if rsi_2 < 90 else pow((rsi_2 - 80) / 10, 2)
             volume = Capital.STOCK_VOLUME
-            TradeUtil.sell(int(volume * grade * alpha / 4), date)
-            logging.info('[{}] sell {}'.format(date, int(volume * grade * alpha)))
+            selling_volume = abs(int(volume * grade * alpha / 4))
+            TradeUtil.sell(selling_volume, date)
+            logging.info('[{}] sell {}'.format(date, selling_volume))
 
         elif rsi_2 < 20 and exit_point != MarketCondition.SHORT:
             alpha = 1 if market_status == MarketStatus.BULL else 0.8
             grade = (20 - rsi_2) / 10 if rsi_2 > 10 else pow((20 - rsi_2) / 10, 2)
             volume = Capital.CASH // StockTrend.get_price_by_date(date)
-            TradeUtil.buy(int(volume * grade * alpha / 4), date)
-            logging.info('[{}] buy {}'.format(date, int(volume * grade * alpha)))
+            buying_volume = abs(int(volume * grade * alpha / 4))
+            TradeUtil.buy(buying_volume, date)
+            logging.info('[{}] buy {}'.format(date, buying_volume))
